@@ -1,0 +1,15 @@
+.card-header{
+    background-color: teal;
+}
+.card-title{
+    text-decoration-color: whitesmoke;
+}
+.custom-border{
+    border-width: 20px;
+    border-style: solid;
+    border-color: #d6f5f5;
+}
+.field{
+    margin-left: 20px;
+    margin-right: 20px;
+}
