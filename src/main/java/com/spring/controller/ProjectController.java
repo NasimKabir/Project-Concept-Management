@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.model.CofogMain;
 import com.spring.model.CofogMainDetails;
@@ -28,6 +29,7 @@ import com.spring.service.ProjectTypeService;
 import com.spring.service.SectorDivisionService;
 import com.spring.service.SectorService;
 import com.spring.service.SubSectorService;
+import com.spring.service.imp.FundServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -45,10 +47,19 @@ public class ProjectController {
 	private final SectorDivisionService sectorDivisionService;
 	private final SectorService sectorService;
 	private final SubSectorService subSectorService;
+	private final FundServiceImpl fundServiceImpl;
 
 	@PostMapping
 	public  ResponseEntity<?> projectInsert(@RequestBody Project Project) {
 		return projectService.projectInsert(Project);
+
+	}
+	
+	@PostMapping("/fund")
+	public  ResponseEntity<?> fundInsert(@RequestParam("fundType") boolean fundType,
+            @RequestParam(value="agrementNumber", required = false) int agrementNumber,
+            @RequestParam(value="agrementFile" ,required = false) MultipartFile agrementFile) throws Exception {
+		return fundServiceImpl.FundInsert(fundType,agrementNumber,agrementFile);
 
 	}
 	

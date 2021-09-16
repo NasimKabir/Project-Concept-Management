@@ -23,20 +23,29 @@ const Project = () => {
         sectorDivision: '',
         sector: '',
         subSector: '',
-        cofogMain:'',
-        cofogMainOptional:'',
-        cofogMainDetails:''
+        cofogMain: '',
+        cofogMainOptional: '',
+        cofogMainDetails: '',
+        fund: ''
     });
     const [error, setError] = useState("");
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const project = { projectCode: request.projectCode, projectType: request.projectType, projectPriority: request.projectPriority, projectTitle: request.projectTitle, projectObjectives: request.projectObjectives };
+        const project = {
+            projectCode: request.projectCode, projectType: request.projectType,
+            projectPriority: request.projectPriority, projectTitle: request.projectTitle,
+            projectObjectives: request.projectObjectives, dateOfCommencement: request.dateOfCommencement,
+            completetion: request.completetion, sectorDivision: request.sectorDivision, sector: request.sector,
+            subSector: request.subSector, cofogMain: request.cofogMain, cofogMainOptional: request.cofogMainOptional,
+            cofogMainDetails: request.cofogMainDetails
+        };
         console.log('project => ' + project);
         console.log('project => ' + JSON.stringify(project));
         ProjectService.createProject(project).then(
             response => {
                 console.log(response)
+                alert("Success")
             },
             error => {
                 const errorMessage = "Full authentication is required to access this resource";
@@ -148,10 +157,11 @@ const Project = () => {
                             <div className="card-body">
 
                                 <label className="field">Project Code:</label>
-                                <input type="text" onChange={e => setRequest({ ...request, projectCode: e.target.value })} />
+                                <input type="number" onChange={e => setRequest({ ...request, projectCode: e.target.value })} />
 
                                 <label className="field">Project Type : </label>
                                 <select onChange={e => setRequest({ ...request, projectType: e.target.value })}>
+                                    <option> </option>
                                     {types.map(item => (
                                         <option key={item.id} value={item.id}>
                                             {item.projectTypeName}
@@ -160,7 +170,8 @@ const Project = () => {
                                 </select>
 
                                 <label className="field">Priority : </label>
-                                <select onChange={e => setRequest({ ...request, projectPriority: e.target.value })} >
+                                <select onChange={e => setRequest({ projectPriority: e.target.value })} >
+                                    <option> </option>
                                     {priority.map(item => (
                                         <option
                                             key={item.id}
@@ -208,10 +219,11 @@ const Project = () => {
                             <div className="card-body">
 
                                 <label className="field">Section Division : </label>
-                                <select onChange={e => setRequest({ ...request, cofogMain: e.target.value })}>
-                                    {cofogMain.map(item => (
+                                <select onChange={e => setRequest({ ...request, sectorDIvison: e.target.value })}>
+                                    <option> </option>
+                                    {sectorDIvison.map(item => (
                                         <option key={item.id} value={item.id}>
-                                            {item.cofogMainName}
+                                            {item.sectorDivisionName}
                                         </option>
                                     ))}
                                 </select>
@@ -221,6 +233,7 @@ const Project = () => {
                                 <br />
                                 <label className="field">Sector : </label>
                                 <select onChange={e => setRequest({ ...request, sector: e.target.value })} >
+                                    <option> </option>
                                     {sector.map(item => (
                                         <option
                                             key={item.id}
@@ -232,6 +245,7 @@ const Project = () => {
                                 </select>
                                 <label className="field">Sub Sector : </label>
                                 <select onChange={e => setRequest({ ...request, subSector: e.target.value })} >
+                                    <option> </option>
                                     {subSector.map(item => (
                                         <option
                                             key={item.id}
@@ -246,18 +260,20 @@ const Project = () => {
                                 <h6 className="font-weight-bold">Classification of the fucntion of goverment(COFGO) </h6>
                                 <br />
                                 <label className="field">Main : </label>
-                                <select onChange={e => setRequest({ ...request, subSector: e.target.value })} >
-                                    {subSector.map(item => (
+                                <select onChange={e => setRequest({ ...request, cofogMain: e.target.value })} >
+                                    <option> </option>
+                                    {cofogMain.map(item => (
                                         <option
                                             key={item.id}
                                             value={item.id}
                                         >
-                                            {item.subSectorName}
+                                            {item.cofoMainName}
                                         </option>
                                     ))}
                                 </select>
                                 <label className="field">Optional : </label>
                                 <select onChange={e => setRequest({ ...request, cofogMainOptional: e.target.value })} >
+                                    <option> </option>
                                     {cofogMainOptional.map(item => (
                                         <option
                                             key={item.id}
@@ -269,6 +285,7 @@ const Project = () => {
                                 </select>
                                 <label className="field">Details : </label>
                                 <select onChange={e => setRequest({ ...request, cofogMainDetails: e.target.value })} >
+                                    <option> </option>
                                     {cofogMainDetails.map(item => (
                                         <option
                                             key={item.id}
@@ -281,7 +298,40 @@ const Project = () => {
                                 <br />
                                 <br />
                                 <h6 className="font-weight-bold">Funding Type </h6>
-                                <br />
+                                <div>
+                                    <label  >Is self Fund :</label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" />
+                                        <label class="form-check-label"  >Yes</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" checked />
+                                        <label class="form-check-label"  >No</label>
+                                    </div>
+                                    <div>
+                                        <label className="field">	Agreement Number:</label>
+                                        <input type="number" onChange={e => setRequest({ ...request, projectCode: e.target.value })} />
+                                        <label className="field">Agreement Attachment:</label>
+                                        <input type="file" onChange={e => setRequest({ ...request, projectCode: e.target.value })} />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label  >Is Foreign Aid :</label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" />
+                                        <label class="form-check-label"  >Yes</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" checked />
+                                        <label class="form-check-label"  >No</label>
+                                    </div>
+                                    <div>
+                                        <label className="field">	Agreement Number:</label>
+                                        <input type="number" onChange={e => setRequest({ ...request, projectCode: e.target.value })} />
+                                        <label className="field">Agreement Attachment:</label>
+                                        <input type="file" onChange={e => setRequest({ ...request, projectCode: e.target.value })} />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

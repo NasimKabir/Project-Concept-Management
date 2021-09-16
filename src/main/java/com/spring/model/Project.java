@@ -41,4 +41,6 @@ public class Project extends BaseModel {
 	private CofogMainOptional cofogMainOptional;
 	@OneToOne
 	private CofogMainDetails cofogMainDetails;
+	@OneToOne
+	private Fund fund;
 }
