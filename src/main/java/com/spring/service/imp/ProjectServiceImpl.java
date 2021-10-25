@@ -8,6 +8,8 @@ import static org.springframework.http.HttpStatus.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import com.spring.model.Project;
 import com.spring.repository.ProjectRepository;
 import com.spring.response.HttpResponse;
@@ -22,7 +24,7 @@ public class ProjectServiceImpl implements ProjectService {
 	private final ProjectRepository projectRepository;
 
 	@Override
-	public ResponseEntity<?> projectInsert(Project project) {
+	public ResponseEntity<?> projectInsert(@RequestBody Project project) {
 		project = projectRepository.save(project);
 		HttpResponse response = new HttpResponse();
 		response.setHttpStatusCode(CREATED.value());

@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -18,24 +19,25 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.spring.filter.JWTAuthenticationFilter;
 import com.spring.filter.JwtTokenProvider;
-import com.spring.service.CustomUserService;
 
 @Configuration
 @EnableWebSecurity 
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private CustomUserService userService;
 
 	@Autowired
-	private JwtTokenProvider jwtTokenProvider;
+	 private UserDetailsService userDetailsService;
+
+	@Autowired
+	private JWTAuthenticationFilter jwtAuthenticationFilter;
 
 	@Autowired
 	private AuthenticationEntryPoint authenticationEntryPoint;
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 
 	}
 
@@ -63,15 +65,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
          .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
          .and()
          .authorizeRequests()
-         .antMatchers("/h2-console/**", "/api/v1/**")
+         .antMatchers("/h2-console/**", "/api/v1/login")
          .permitAll()
          .anyRequest()
          .authenticated();
 		 
 
- http
- .addFilterBefore(new JWTAuthenticationFilter(userService, jwtTokenProvider),
-			UsernamePasswordAuthenticationFilter.class);
+		 http
+		 .addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class);
  
 
  
